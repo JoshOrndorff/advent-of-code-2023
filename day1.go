@@ -1,13 +1,31 @@
 package main
 
-import "fmt"
-import "unicode"
+import (
+    "bufio"
+    "fmt"
+    "log"
+    "os"
+    "unicode"
+)
 
 func main() {
-    fmt.Println("Hello, Joshy")
+    // Opening and reading file from
+    // https://stackoverflow.com/questions/8757389/reading-a-file-line-by-line-in-go
+    file, err := os.Open("./day1-input.txt")
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer file.Close()
+    scanner := bufio.NewScanner(file)
 
-    result := get_calibration_code("a1bcdefg 1ABCDEFG1")
-    fmt.Println(result)
+    sum := 0
+    for scanner.Scan() {
+        code := get_calibration_code(scanner.Text())
+        fmt.Println("adding code: ", code)
+        sum += code;
+    }
+
+    fmt.Println("The sum of all calibration codes is: ", sum)
 }
 
 func get_calibration_code(s string) int {
